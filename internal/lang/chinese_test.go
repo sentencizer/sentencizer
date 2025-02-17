@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/gosbd/gosbd"
+	"github.com/sentencizer/sentencizer"
 )
 
 func Test_Chinese(t *testing.T) {
@@ -26,7 +26,7 @@ func Test_Chinese(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.args.text, func(t *testing.T) {
-			sg := gosbd.NewSegmenter("zh")
+			sg := sentencizer.NewSegmenter("zh")
 			if got := sg.Segment(tt.args.text); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Segmenter.Segment() = %#v, want %#v", got, tt.want)
 			}

@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/gosbd/gosbd/internal/rule"
+	"github.com/sentencizer/sentencizer/internal/rule"
 )
 
 type Abbreviation struct {

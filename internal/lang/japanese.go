@@ -3,8 +3,8 @@ package lang
 import (
 	"regexp"
 
-	"github.com/gosbd/gosbd/internal/processor"
-	"github.com/gosbd/gosbd/internal/replacer"
+	"github.com/sentencizer/sentencizer/internal/processor"
+	"github.com/sentencizer/sentencizer/internal/replacer"
 )
 
 func newJapanese() *processor.Config {

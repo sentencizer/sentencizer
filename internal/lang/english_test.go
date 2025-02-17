@@ -3,7 +3,7 @@ package lang_test
 import (
 	"testing"
 
-	"github.com/gosbd/gosbd"
+	"github.com/sentencizer/sentencizer"
 )
 
 func Test_English(t *testing.T) {
@@ -453,7 +453,7 @@ func Test_English(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sg := gosbd.NewSegmenter("en")
+			sg := sentencizer.NewSegmenter("en")
 			got := sg.Segment(tt.args.text)
 			for i, v := range got {
 				if i >= len(tt.want) {

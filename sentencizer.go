@@ -1,11 +1,11 @@
-package gosbd
+package sentencizer
 
 import (
-	"github.com/gosbd/gosbd/internal/cleaner"
-	"github.com/gosbd/gosbd/internal/lang"
-	"github.com/gosbd/gosbd/internal/processor"
-	"github.com/gosbd/gosbd/internal/replacer"
-	"github.com/gosbd/gosbd/internal/segmenter"
+	"github.com/sentencizer/sentencizer/internal/cleaner"
+	"github.com/sentencizer/sentencizer/internal/lang"
+	"github.com/sentencizer/sentencizer/internal/processor"
+	"github.com/sentencizer/sentencizer/internal/replacer"
+	"github.com/sentencizer/sentencizer/internal/segmenter"
 )
 
 // Segmenter segments a text into an list of sentences.

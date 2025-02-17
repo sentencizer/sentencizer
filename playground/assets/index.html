@@ -1,288 +1,311 @@
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>GoSBD Playground</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="utf-8" />
+    <title>Sentencizer Playground</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <meta property="og:title" content="GoSBD">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://gosbd.pages.dev/">
-        <meta property="og:image" content="https://gosbd.pages.dev/sbd-gopher-social.png">
-        <meta property="og:image:url" content="https://gosbd.pages.dev/sbd-gopher-social.png">
-        <meta property="og:image:alt" content="GoSBD">
+    <meta property="og:title" content="Sentencizer" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sentencizer.pages.dev/" />
+    <meta
+      property="og:image"
+      content="https://sentencizer.pages.dev/sbd-gopher-social.png"
+    />
+    <meta
+      property="og:image:url"
+      content="https://sentencizer.pages.dev/sbd-gopher-social.png"
+    />
+    <meta property="og:image:alt" content="Sentencizer" />
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:description" content="A sentence boundary disambiguation library for Go. It is rule-based and works out-of-the-box." />
-        <meta name="twitter:site" content="GoSBD" />
-        <meta name="twitter:creator" content="GoSBD developers" />
-        <meta name="twitter:title" content="GoSBD" />
-        <meta name="twitter:description" content="A sentence boundary disambiguation library for Go. It is rule-based and works out-of-the-box." />
-        <meta name="twitter:image" content="https://gosbd.pages.dev/sbd-gopher-social.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:description"
+      content="A sentence boundary disambiguation library for Go. It is rule-based and works out-of-the-box."
+    />
+    <meta name="twitter:site" content="Sentencizer" />
+    <meta name="twitter:creator" content="Sentencizer developers" />
+    <meta name="twitter:title" content="Sentencizer" />
+    <meta
+      name="twitter:description"
+      content="A sentence boundary disambiguation library for Go. It is rule-based and works out-of-the-box."
+    />
+    <meta
+      name="twitter:image"
+      content="https://sentencizer.pages.dev/sbd-gopher-social.png"
+    />
 
-        <script src="wasm_exec.js"></script>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                box-sizing: border-box;
-            }
-            .container {
-                max-width: 800px;
-                margin: auto;
-            }
-            h1,
-            h2 {
-                color: #333;
-            }
-            .caption {
-                font-size: 14px;
-                color: #666;
-                text-align: left;
-            }
-            label {
-                display: block;
-                margin-bottom: 5px;
-            }
-            select,
-            textarea,
-            button {
-                width: 100%;
-                max-width: 100%;
-                padding: 10px;
-                margin-bottom: 20px;
-                box-sizing: border-box;
-                display: block;
-            }
-            button {
-                background-color: #007bff;
-                color: white;
-                border: none;
-                cursor: pointer;
-            }
-            button:hover {
-                background-color: #0056b3;
-            }
-            #result {
-                list-style-type: none;
-                padding: 0;
-            }
-            #result li {
-                background-color: #f0f0f0;
-                margin-bottom: 5px;
-                padding: 10px;
-                border-radius: 5px;
-            }
-            .header {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding-bottom: 20px;
-            }
-            /* Custom radio button styles */
-            .radio-group {
-                margin-bottom: 20px;
-            }
+    <script src="wasm_exec.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+      }
+      h1,
+      h2 {
+        color: #333;
+      }
+      .caption {
+        font-size: 14px;
+        color: #666;
+        text-align: left;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      select,
+      textarea,
+      button {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        display: block;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #result {
+        list-style-type: none;
+        padding: 0;
+      }
+      #result li {
+        background-color: #f0f0f0;
+        margin-bottom: 5px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+      }
+      /* Custom radio button styles */
+      .radio-group {
+        margin-bottom: 20px;
+      }
 
-            .radio-group input[type="radio"] {
-                display: none; /* Hide original radio buttons */
-            }
+      .radio-group input[type="radio"] {
+        display: none; /* Hide original radio buttons */
+      }
 
-            .radio-group label {
-                position: relative;
-                padding-left: 25px;
-                padding-top: 4px;
-                cursor: pointer;
-                display: inline-block;
-                color: #333; /* Text color */
-                margin-right: 10px; /* Space between radio buttons */
-            }
+      .radio-group label {
+        position: relative;
+        padding-left: 25px;
+        padding-top: 4px;
+        cursor: pointer;
+        display: inline-block;
+        color: #333; /* Text color */
+        margin-right: 10px; /* Space between radio buttons */
+      }
 
-            .radio-group label:before {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: white;
-                border: 2px solid #007bff; /* Border color */
-            }
+      .radio-group label:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: white;
+        border: 2px solid #007bff; /* Border color */
+      }
 
-            .radio-group input[type="radio"]:checked + label:before {
-                background: #007bff; /* Background color for checked state */
-            }
+      .radio-group input[type="radio"]:checked + label:before {
+        background: #007bff; /* Background color for checked state */
+      }
 
-            .radio-group label:after {
-                content: "";
-                position: absolute;
-                top: 7px;
-                left: 7px;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background: white;
-                opacity: 0; /* Hidden by default */
-            }
+      .radio-group label:after {
+        content: "";
+        position: absolute;
+        top: 7px;
+        left: 7px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+        opacity: 0; /* Hidden by default */
+      }
 
-            .radio-group input[type="radio"]:checked + label:after {
-                opacity: 1; /* Show the inner circle for checked state */
-            }
-            @media (max-width: 600px) {
-                body {
-                    padding: 10px;
-                }
-                select,
-                textarea,
-                button {
-                    max-width: none;
-                }
-                textarea {
-                    rows: "2";
-                    cols: "20";
-                }
-                .header {
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                }
-            }
-            .responsive-image {
-                max-width: 100%;
-                height: auto;
-                display: block; /* Ensures the image is centered if its container has text-align: center */
-                margin: 0 auto 20px auto; /* Centers the image horizontally */
-            }
-        </style>
-        <script>
-            const go = new Go();
-            // remove the message: syscall/js.finalizeRef not implemented
-            go.importObject.env["syscall/js.finalizeRef"] = () => {};
-            WebAssembly.instantiateStreaming(
-                fetch("main.wasm"),
-                go.importObject
-            ).then((result) => {
-                go.run(result.instance);
-            });
+      .radio-group input[type="radio"]:checked + label:after {
+        opacity: 1; /* Show the inner circle for checked state */
+      }
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+        select,
+        textarea,
+        button {
+          max-width: none;
+        }
+        textarea {
+          rows: "2";
+          cols: "20";
+        }
+        .header {
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+        }
+      }
+      .responsive-image {
+        max-width: 100%;
+        height: auto;
+        display: block; /* Ensures the image is centered if its container has text-align: center */
+        margin: 0 auto 20px auto; /* Centers the image horizontally */
+      }
+    </style>
+    <script>
+      const go = new Go();
+      // remove the message: syscall/js.finalizeRef not implemented
+      go.importObject.env["syscall/js.finalizeRef"] = () => {};
+      WebAssembly.instantiateStreaming(
+        fetch("main.wasm"),
+        go.importObject
+      ).then((result) => {
+        go.run(result.instance);
+      });
 
-            function run() {
-                const selection = document.querySelector("input[name=segmenter]:checked").value;
-                console.log(`selected segmenter: ${selection}`);
-                if (selection === "gosbd") {
-                    return runSBD();
-                }
-                if (selection === "intlSegmenter") {
-                    return intlSegmenter();
-                }
-            }
+      function run() {
+        const selection = document.querySelector(
+          "input[name=segmenter]:checked"
+        ).value;
+        console.log(`selected segmenter: ${selection}`);
+        if (selection === "sentencizer") {
+          return runSBD();
+        }
+        if (selection === "intlSegmenter") {
+          return intlSegmenter();
+        }
+      }
 
-            function runSBD() {
-                const lang = document.querySelector("select").value;
-                const text = document.getElementById("text").value;
-                if (!text) {
-                    alert("please input text.");
-                    return;
-                }
-                const resultElem = document.getElementById("result");
-                resultElem.innerHTML = "";
-                const resultText = segment(text, lang);
-                resultText.split("\r").forEach((sentence) => {
-                    const item = document.createElement("li");
-                    item.innerText = sentence;
-                    resultElem.appendChild(item);
-                });
-            }
+      function runSBD() {
+        const lang = document.querySelector("select").value;
+        const text = document.getElementById("text").value;
+        if (!text) {
+          alert("please input text.");
+          return;
+        }
+        const resultElem = document.getElementById("result");
+        resultElem.innerHTML = "";
+        const resultText = segment(text, lang);
+        resultText.split("\r").forEach((sentence) => {
+          const item = document.createElement("li");
+          item.innerText = sentence;
+          resultElem.appendChild(item);
+        });
+      }
 
-            function intlSegmenter() {
-                const lang = document.querySelector("select").value;
-                const text = document.getElementById("text").value;
-                if (!text) {
-                    alert("please input text.");
-                    return;
-                }
-                const resultElem = document.getElementById("result");
-                resultElem.innerHTML = "";
+      function intlSegmenter() {
+        const lang = document.querySelector("select").value;
+        const text = document.getElementById("text").value;
+        if (!text) {
+          alert("please input text.");
+          return;
+        }
+        const resultElem = document.getElementById("result");
+        resultElem.innerHTML = "";
 
-                const segmenter = new Intl.Segmenter(lang, {
-                    granularity: "sentence",
-                });
-                const iterator = segmenter.segment(text)[Symbol.iterator]();
-                const resultText = [];
-                for (let { segment, index } of iterator) {
-                    resultText.push(segment);
-                }
-                resultText.forEach((sentence) => {
-                    const item = document.createElement("li");
-                    item.innerText = sentence;
-                    resultElem.appendChild(item);
-                });
-            }
-        </script>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <div>
-                    <h1>GoSBD Playground</h1>
-                    <span class="caption"
-                        >GoSBD is a library for segmenting text into sentences
-                        for Go. It is rule-based and works out-of-the-box.</span
-                    >
-                </div>
-                <div>
-                    <div class="github-star-button">
-                        <iframe
-                            src="https://ghbtns.com/github-btn.html?user=gosbd&repo=gosbd&type=star&count=true&size=large"
-                            frameborder="0"
-                            scrolling="0"
-                            width="160px"
-                            height="30px"
-                        ></iframe>
-                    </div>
-                </div>
-            </div>
-            <img src="https://gosbd.pages.dev/sbd-gopher-social.png" alt="GoSBD Image" class="responsive-image" />
-            <section>
-                <div>
-                    <label for="lang">Language</label>
-                    <select>
-                        <option value="en">English</option>
-                        <option value="zh">Chinese</option>
-                        <option value="ja">Japanese</option>
-                        <option value="ru">Russian</option>
-                    </select>
-                </div>
-                <div>
-                    <div class="radio-group">
-                        <input
-                            type="radio"
-                            id="gosbd"
-                            name="segmenter"
-                            value="gosbd"
-                            checked
-                        />
-                        <label for="gosbd">GoSBD</label>
-                        <input
-                            type="radio"
-                            id="intlSegmenter"
-                            name="segmenter"
-                            value="intlSegmenter"
-                        />
-                        <label for="intlSegmenter">Intl.Segmenter</label>
-                    </div>
-                </div>
-                <div>
-                    <label for="text">Text to segment</label>
-                    <textarea id="text" name="text" rows="4" cols="50">Dr. Jane Smith, M.D., Ph.D., the renowned researcher from the World Health Organization (WHO), recently presented her groundbreaking findings at the Annual International Conference on Infectious Diseases held in Geneva, Switzerland; her presentation, titled "Advancements in the Treatment and Prevention of Zoonotic Diseases: A Global Perspective," highlighted three key areas: 1) the development of novel vaccines for emerging pathogens, 2) the implementation of early warning systems for disease outbreaks, and 3) the importance of international collaboration in combating the spread of infectious diseases across borders. Dr. Smith's research, which has been published in numerous peer-reviewed journals, including The Lancet, Nature, and the New England Journal of Medicine, has been instrumental in shaping global health policies and saving countless lives worldwide. As a result of her significant contributions to the field, Dr. Smith has been awarded several prestigious honors, such as the Robert Koch Award, the Louis Pasteur Medal, and the Albert Schweitzer Prize for Humanitarianism. Her tireless efforts continue to inspire and guide the next generation of public health professionals in their mission to create a healthier, more resilient world for all.</textarea>
-                </div>
-                <button onclick="run()">Segment!</button>
-            </section>
-            <section>
-                <h2>Result</h2>
-                <ul id="result"></ul>
-            </section>
+        const segmenter = new Intl.Segmenter(lang, {
+          granularity: "sentence",
+        });
+        const iterator = segmenter.segment(text)[Symbol.iterator]();
+        const resultText = [];
+        for (let { segment, index } of iterator) {
+          resultText.push(segment);
+        }
+        resultText.forEach((sentence) => {
+          const item = document.createElement("li");
+          item.innerText = sentence;
+          resultElem.appendChild(item);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div>
+          <h1>Sentencizer Playground</h1>
+          <span class="caption"
+            >Sentencizer is a library for segmenting text into sentences for Go.
+            It is rule-based and works out-of-the-box.</span
+          >
         </div>
-    </body>
+        <div>
+          <div class="github-star-button">
+            <iframe
+              src="https://ghbtns.com/github-btn.html?user=sentencizer&repo=sentencizer&type=star&count=true&size=large"
+              frameborder="0"
+              scrolling="0"
+              width="160px"
+              height="30px"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+      <img
+        src="https://sentencizer.pages.dev/sbd-gopher-social.png"
+        alt="Sentencizer Image"
+        class="responsive-image"
+      />
+      <section>
+        <div>
+          <label for="lang">Language</label>
+          <select>
+            <option value="en">English</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ru">Russian</option>
+          </select>
+        </div>
+        <div>
+          <div class="radio-group">
+            <input
+              type="radio"
+              id="sentencizer"
+              name="segmenter"
+              value="sentencizer"
+              checked
+            />
+            <label for="sentencizer">Sentencizer</label>
+            <input
+              type="radio"
+              id="intlSegmenter"
+              name="segmenter"
+              value="intlSegmenter"
+            />
+            <label for="intlSegmenter">Intl.Segmenter</label>
+          </div>
+        </div>
+        <div>
+          <label for="text">Text to segment</label>
+          <textarea id="text" name="text" rows="4" cols="50">
+Dr. Jane Smith, M.D., Ph.D., the renowned researcher from the World Health Organization (WHO), recently presented her groundbreaking findings at the Annual International Conference on Infectious Diseases held in Geneva, Switzerland; her presentation, titled "Advancements in the Treatment and Prevention of Zoonotic Diseases: A Global Perspective," highlighted three key areas: 1) the development of novel vaccines for emerging pathogens, 2) the implementation of early warning systems for disease outbreaks, and 3) the importance of international collaboration in combating the spread of infectious diseases across borders. Dr. Smith's research, which has been published in numerous peer-reviewed journals, including The Lancet, Nature, and the New England Journal of Medicine, has been instrumental in shaping global health policies and saving countless lives worldwide. As a result of her significant contributions to the field, Dr. Smith has been awarded several prestigious honors, such as the Robert Koch Award, the Louis Pasteur Medal, and the Albert Schweitzer Prize for Humanitarianism. Her tireless efforts continue to inspire and guide the next generation of public health professionals in their mission to create a healthier, more resilient world for all.</textarea
+          >
+        </div>
+        <button onclick="run()">Segment!</button>
+      </section>
+      <section>
+        <h2>Result</h2>
+        <ul id="result"></ul>
+      </section>
+    </div>
+  </body>
 </html>

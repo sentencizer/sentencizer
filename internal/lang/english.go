@@ -1,6 +1,6 @@
 package lang
 
-import "github.com/gosbd/gosbd/internal/processor"
+import "github.com/sentencizer/sentencizer/internal/processor"
 
 type english struct {
 	*processor.Config

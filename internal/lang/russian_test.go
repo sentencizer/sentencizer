@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/gosbd/gosbd"
+	"github.com/sentencizer/sentencizer"
 )
 
 func Test_Russian(t *testing.T) {
@@ -277,7 +277,7 @@ func Test_Russian(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.args.text, func(t *testing.T) {
-			sg := gosbd.NewSegmenter("ru")
+			sg := sentencizer.NewSegmenter("ru")
 			if got := sg.Segment(tt.args.text); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Segmenter.Segment() = %#v, want %#v", got, tt.want)
 			}
