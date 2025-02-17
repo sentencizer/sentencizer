@@ -1,54 +1,54 @@
-# **GoSBD: Sentence Splitting (Sentence Boundary Disambiguation) Library for Go**
+# **Sentencizer: Sentence Splitting (Sentence Boundary Disambiguation) Library for Go**
 
-<img align="right" width="320" src="/artifacts/sbd-gopher.png" alt="gosbd-logo" title="dsbd-logo" />
+<img align="right" width="320" src="/artifacts/sbd-gopher.png" alt="sentencizer-logo" title="dsbd-logo" />
 
-[![Godoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/gosbd/gosbd)
+[![Godoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/sentencizer/sentencizer)
 
-GoSBD is a library for segmenting text into sentences, designed to make it easier to build Retrieval Augmented Generation (RAG) systems in Go. It is inspired by [pySBD](https://github.com/nipunsadvilkar/pySBD) and [pragmatic_segmenter](https://github.com/diasks2/pragmatic_segmenter), and works out-of-the-box with a rule-based approach.
+Sentencizer is a library for segmenting text into sentences, designed to make it easier to build Retrieval Augmented Generation (RAG) systems in Go. It is inspired by [pySBD](https://github.com/nipunsadvilkar/pySBD) and [pragmatic_segmenter](https://github.com/diasks2/pragmatic_segmenter), and works out-of-the-box with a rule-based approach.
 
 ## Playground
 
-Try out GoSBD in our [online playground](https://gosbd.pages.dev/).
+Try out Sentencizer in our [online playground](https://sentencizer.pages.dev/).
 
 ## Features
 
 - **Sentence Splitting**: Efficiently breaks down a block of text into individual sentences.
 - **Lightweight and Easy Integration**: Designed to be lightweight and easy to integrate into existing Go projects.
 - **High Accuracy**: Offers high accuracy in sentence segmentation. For more details, see [pySBD](https://github.com/nipunsadvilkar/pySBD).
-- **Fast Sentence Splitting**: GoSBD aims to provide high-performance sentence splitting by leveraging Go's efficiency.
+- **Fast Sentence Splitting**: Sentencizer aims to provide high-performance sentence splitting by leveraging Go's efficiency.
 - **Non-Destructive Splitting**: Segments text into sentences without altering the original content.
 - **Language-Specific Configuration**: Adaptable to handle punctuation rules specific to different languages.
 - **Text Cleaning**: Equipped with features to manage and clean noisy text, including:
-    - Handling irregular newline characters and spacing
-    - Processing Tables of Contents
-    - Recognizing and managing URLs and HTML tags
-    - Dealing with sentences that are delimited without any space
+  - Handling irregular newline characters and spacing
+  - Processing Tables of Contents
+  - Recognizing and managing URLs and HTML tags
+  - Dealing with sentences that are delimited without any space
 
 _Note: Text Cleaning feature is to be implemented. Contributions are greatly welcomed._
 
 ## Installation
 
-To install gosbd, you can use `go get`:
+To install sentencizer, you can use `go get`:
 
 ```sh
-go get github.com/gosbd/gosbd
+go get github.com/sentencizer/sentencizer
 ```
 
 ## Usage
 
-Here's a basic example of how to use gosbd:
+Here's a basic example of how to use sentencizer:
 
 ```go
 package main
 
 import (
     "fmt"
-    "github.com/gosbd/gosbd"
+    "github.com/sentencizer/sentencizer"
 )
 
 // This example segments a text string into individual sentences.
 func main() {
-    segmenter := gosbd.NewSegmenter("en")
+    segmenter := sentencizer.NewSegmenter("en")
     text := "This is a sentence. And this is another one."
     sentences := segmenter.Segment(text)
     for _, sentence := range sentences {
@@ -71,31 +71,31 @@ func main() {
 
 The following table outlines our current language support. We're actively seeking contributions to expand this list. If you're interested in contributing, consider helping us add support for a language, whether it's listed below or not. Your expertise in a language not listed here could be a valuable addition to our project.
 
-| Language   | ISO Code | Supported |
-| ---------- | -------- |-----------|
-| Amharic    | am       | Planned   |
-| Arabic     | ar       | Planned   |
-| Armenian   | hy       | Planned   |
-| Bulgarian  | bg       | Planned   |
-| Burmese    | my       | Planned   |
-| Chinese    | zh       | Yes       |
-| Danish     | da       | Planned   |
-| Deutsch    | de       | Planned   |
-| Dutch      | nl       | Planned   |
-| English    | en       | Yes       |
-| French     | fr       | Planned   |
-| Greek      | el       | Planned   |
-| Hindi      | hi       | Planned   |
-| Italian    | it       | Planned   |
-| Japanese   | ja       | Yes       |
-| Kazakh     | kk       | Planned   |
-| Marathi    | mr       | Planned   |
-| Persian    | fa       | Planned   |
-| Polish     | pl       | Planned   |
-| Russian    | ru       | Yes       |
-| Slovak     | sk       | Planned   |
-| Spanish    | es       | Planned   |
-| Urdu       | ur       | Planned   |
+| Language  | ISO Code | Supported |
+| --------- | -------- | --------- |
+| Amharic   | am       | Planned   |
+| Arabic    | ar       | Planned   |
+| Armenian  | hy       | Planned   |
+| Bulgarian | bg       | Planned   |
+| Burmese   | my       | Planned   |
+| Chinese   | zh       | Yes       |
+| Danish    | da       | Planned   |
+| Deutsch   | de       | Planned   |
+| Dutch     | nl       | Planned   |
+| English   | en       | Yes       |
+| French    | fr       | Planned   |
+| Greek     | el       | Planned   |
+| Hindi     | hi       | Planned   |
+| Italian   | it       | Planned   |
+| Japanese  | ja       | Yes       |
+| Kazakh    | kk       | Planned   |
+| Marathi   | mr       | Planned   |
+| Persian   | fa       | Planned   |
+| Polish    | pl       | Planned   |
+| Russian   | ru       | Yes       |
+| Slovak    | sk       | Planned   |
+| Spanish   | es       | Planned   |
+| Urdu      | ur       | Planned   |
 
 We welcome contributions that help us add support for these languages. Please feel free to submit a Pull Request with your contributions.
 
@@ -105,7 +105,7 @@ Sentence splitting is a crucial step in the preprocessing pipeline of Natural La
 
 While libraries like pragmatic_segmenter and pySBD are known for their high accuracy and efficiency in sentence splitting, there are no equivalent libraries available in Go. This poses a challenge for developers building RAG systems in Go, as they need to rely on external libraries or implement their own sentence splitting logic.
 
-GoSBD aims to bridge this gap by providing a reliable and efficient sentence splitting solution in Go. By offering a native Go library for sentence splitting, GoSBD simplifies the process of building RAG systems and other NLP applications entirely within the Go ecosystem. This not only streamlines the development workflow but also enables faster execution times by leveraging Go's performance characteristics.
+Sentencizer aims to bridge this gap by providing a reliable and efficient sentence splitting solution in Go. By offering a native Go library for sentence splitting, Sentencizer simplifies the process of building RAG systems and other NLP applications entirely within the Go ecosystem. This not only streamlines the development workflow but also enables faster execution times by leveraging Go's performance characteristics.
 
 ## Acknowledgement
 

@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/gosbd/gosbd/internal/processor"
+	"github.com/sentencizer/sentencizer/internal/processor"
 )
 
 func newRussian() *processor.Config {

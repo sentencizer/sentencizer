@@ -6,13 +6,13 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/gosbd/gosbd"
+	"github.com/sentencizer/sentencizer"
 )
 
 func segment(this js.Value, inputs []js.Value) interface{} {
 	text := inputs[0].String()
 	lang := inputs[1].String()
-	segmenter := gosbd.NewSegmenter(lang)
+	segmenter := sentencizer.NewSegmenter(lang)
 	return strings.Join(segmenter.Segment(text), "\r")
 }
 

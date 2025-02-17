@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gosbd/gosbd/internal/processor"
-	"github.com/gosbd/gosbd/internal/rule"
+	"github.com/sentencizer/sentencizer/internal/processor"
+	"github.com/sentencizer/sentencizer/internal/rule"
 )
 
 type ListItemReplacer struct {

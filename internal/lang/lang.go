@@ -3,7 +3,7 @@ package lang
 import (
 	"fmt"
 
-	"github.com/gosbd/gosbd/internal/processor"
+	"github.com/sentencizer/sentencizer/internal/processor"
 )
 
 var (
