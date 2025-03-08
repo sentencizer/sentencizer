@@ -8,7 +8,7 @@ Sentencizer is a library for segmenting text into sentences, designed to make it
 
 ## Playground
 
-Try out Sentencizer in our [online playground](https://sentencizer.pages.dev/).
+Try out Sentencizer in our [online playground](https://gosbd.pages.dev).
 
 ## Features
 
