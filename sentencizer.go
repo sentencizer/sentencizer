@@ -20,7 +20,7 @@ type Segmenter interface {
 // Option is a type that represents a function that modifies the Options struct.
 type Option func(*segmenter.Params)
 
-// Clean cleans original tex,by default False
+// Clean cleans original text,by default False
 func Clean() Option {
 	return func(params *segmenter.Params) {
 		params.Cleaner = cleaner.NewCleaner()
