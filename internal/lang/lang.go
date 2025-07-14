@@ -12,6 +12,7 @@ var (
 		"zh": newChinese(),
 		"ja": newJapanese(),
 		"ru": newRussian(),
+		"he": newHebrew(),
 	}
 )
 
