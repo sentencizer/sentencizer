@@ -18,5 +18,8 @@ func newHebrew() *processor.Config {
 			processor.SentenceBoundaryRuleHebrew1,
 		},
 	}
+	cfg.DoublePunctuationRules.All   = nil
+	cfg.ContinuousPunctuationRegex  = nil
+	cfg.ExclamationPointRules.All    = nil
 	return cfg
 }
