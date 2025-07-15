@@ -71,31 +71,32 @@ func main() {
 
 The following table outlines our current language support. We're actively seeking contributions to expand this list. If you're interested in contributing, consider helping us add support for a language, whether it's listed below or not. Your expertise in a language not listed here could be a valuable addition to our project.
 
-| Language  | ISO Code | Supported |
-| --------- | -------- | --------- |
-| Amharic   | am       | Planned   |
-| Arabic    | ar       | Planned   |
-| Armenian  | hy       | Planned   |
-| Bulgarian | bg       | Planned   |
-| Burmese   | my       | Planned   |
-| Chinese   | zh       | Yes       |
-| Danish    | da       | Planned   |
-| Deutsch   | de       | Planned   |
-| Dutch     | nl       | Planned   |
-| English   | en       | Yes       |
-| French    | fr       | Planned   |
-| Greek     | el       | Planned   |
-| Hindi     | hi       | Planned   |
-| Italian   | it       | Planned   |
-| Japanese  | ja       | Yes       |
-| Kazakh    | kk       | Planned   |
-| Marathi   | mr       | Planned   |
-| Persian   | fa       | Planned   |
-| Polish    | pl       | Planned   |
-| Russian   | ru       | Yes       |
-| Slovak    | sk       | Planned   |
-| Spanish   | es       | Planned   |
-| Urdu      | ur       | Planned   |
+| Language  | ISO Code | Supported | Contributed By |
+| --------- | -------- | --------- | ----------- |
+| Amharic   | am       | Planned   ||
+| Arabic    | ar       | Planned   ||
+| Armenian  | hy       | Planned   ||
+| Bulgarian | bg       | Planned   ||
+| Burmese   | my       | Planned   ||
+| Chinese   | zh       | Yes       ||
+| Danish    | da       | Planned   ||
+| Deutsch   | de       | Planned   ||
+| Dutch     | nl       | Planned   ||
+| English   | en       | Yes       ||
+| French    | fr       | Planned   ||
+| Greek     | el       | Planned   ||
+| Hindi     | hi       | Planned   ||
+| Hebrew    | he       | Yes       | [@neurlang](https://github.com/neurlang) |
+| Italian   | it       | Planned   ||
+| Japanese  | ja       | Yes       ||
+| Kazakh    | kk       | Planned   ||
+| Marathi   | mr       | Planned   ||
+| Persian   | fa       | Planned   ||
+| Polish    | pl       | Planned   ||
+| Russian   | ru       | Yes       ||
+| Slovak    | sk       | Planned   ||
+| Spanish   | es       | Planned   ||
+| Urdu      | ur       | Planned   ||
 
 We welcome contributions that help us add support for these languages. Please feel free to submit a Pull Request with your contributions.
 
