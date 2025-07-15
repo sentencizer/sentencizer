@@ -555,12 +555,20 @@ var (
 	continuousPunctuationRegex = regexp.MustCompile(`(\S)([!?]){3,}(\s|\z|$)`)
 	// Rubular: http://rubular.com/r/NqCqv372Ix
 	quotationAtEndOfSentenceRegex = regexp.MustCompile(`[!?.-]["'“”]\s[A-Z]`)
+
+	QuotationAtEndOfSentenceHebrewRegex = regexp.MustCompile(`([!?\.]["»])\s+(\p{Hebrew})`)
+
 	// Rubular: http://rubular.com/r/JMjlZHAT4g
 	splitSpaceQuotationAtEndOfSentenceRule = rule.NewRule(regexp.MustCompile(`([!?.-]["'“”])\s([A-Z])`), "$1\r$2")
 	// https://rubular.com/r/UkumQaILKbkeyc
 	// https://github.com/diasks2/pragmatic_segmenter/commit/d9ec1a352aff92b91e2e572c30bb9561eb42c703
 	numberedReferenceRegex = regexp.MustCompile(
 		`([^\d\s])([.|∯])(\[((\d{1,3},?\s?-?\s?)*\b\d{1,3}])+|((\d{1,3}\s?)?\d{1,3}))(\s)([A-Z])`,
+	)
+
+	SplitSpaceHebrewAtEndOfSentenceRule = rule.NewRule(regexp.MustCompile(
+			`([!?\.]["»])\s+(\p{Hebrew})`,
+		), "$1\r$2",
 	)
 )
 
@@ -603,6 +611,12 @@ var (
 	// Rubular: http://rubular.com/r/i60hCK81fz
 	ellipsisThreeConsecutiveRule = rule.NewRule(regexp.MustCompile(`\.\.\.(\s+[A-Z])`), "☏☏.${1}")
 	ellipsisOtherThreePeriodRule = rule.NewRule(regexp.MustCompile(`\.\.\.`), "ƪƪƪ")
+
+	EllipsisHebrewRule = Ellipsis{
+		All: rule.Rules{
+			rule.NewRule(regexp.MustCompile(`(\.\.\.)\s+(\p{Hebrew})`), "$1\r$2"),
+		},
+	}
 )
 
 var (
@@ -634,4 +648,9 @@ var (
 	sentenceBoundaryRule7 = rule.NewRule(regexp.MustCompile(`(\S.*?[。．.！!?？ȸȹ☉☈☇☄])\s*(\S*?)`), "$1\r$2")
 	sentenceBoundaryRule8 = rule.NewRule(regexp.MustCompile(`([。．.！!? ]{2,})`), "$1\r")
 	sentenceBoundaryRule9 = rule.NewRule(regexp.MustCompile(`([。．.！!?？])`), "$1\r")
+	// 1) split when .?!+ plus optional closing quote is followed by space(s)
+	SentenceBoundaryRuleHebrew1 = rule.NewRule(
+		regexp.MustCompile(`([.?!]+["»”]?)(?:\s+|$)`), // Using \s+
+		"$1\r",
+	)
 )
