@@ -6,15 +6,14 @@ import (
 	"github.com/sentencizer/sentencizer/internal/processor"
 )
 
-var (
-	langMap = map[string]*processor.Config{
-		"en": processor.Standard(),
-		"zh": newChinese(),
-		"ja": newJapanese(),
-		"ru": newRussian(),
-		"he": newHebrew(),
-	}
-)
+var langMap = map[string]*processor.Config{
+	"en": processor.Standard(),
+	"zh": newChinese(),
+	"ja": newJapanese(),
+	"ru": newRussian(),
+	"he": newHebrew(),
+	"lt": newLithuanian(),
+}
 
 func Lang(lang string) *processor.Config {
 	if _, ok := langMap[lang]; !ok {
