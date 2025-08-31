@@ -90,6 +90,7 @@ The following table outlines our current language support. We're actively seekin
 | Italian   | it       | Planned   ||
 | Japanese  | ja       | Yes       ||
 | Kazakh    | kk       | Planned   ||
+| Lithuanian| lt       | Yes       | [@naglis](https://github.com/naglis) |
 | Marathi   | mr       | Planned   ||
 | Persian   | fa       | Planned   ||
 | Polish    | pl       | Planned   ||
