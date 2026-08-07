@@ -65,7 +65,9 @@ func (l ListItemReplacer) AddLineBreak(text string) string {
 }
 
 func (l ListItemReplacer) ReplaceParens(text string) string {
-	return romanNumeralsInParentheses.ReplaceAllString(text, `&✂&$1&⌬&$2`)
+	// pySBD uses lookahead for (\s[A-Z]) so the capital is not consumed.
+	// RE2 rewrite: capture and re-insert that group ($6).
+	return romanNumeralsInParentheses.ReplaceAllString(text, `&✂&$1&⌬&$6`)
 }
 
 func (l ListItemReplacer) formatAlphabeticalLists(text string) string {

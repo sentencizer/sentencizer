@@ -24,7 +24,7 @@ Try out Sentencizer in our [online playground](https://gosbd.pages.dev).
   - Recognizing and managing URLs and HTML tags
   - Dealing with sentences that are delimited without any space
 
-_Note: Text Cleaning feature is to be implemented. Contributions are greatly welcomed._
+_Note: Text Cleaning is available via `sentencizer.Clean()` (ported from pySBD)._
 
 ## Installation
 
@@ -62,7 +62,7 @@ func main() {
 - [x] Add Online Playground.
 - [ ] Add chuking feature with overlapping option.
 - [ ] Setup Codecov for monitoring test coverage.
-- [ ] Implement text cleaner.
+- [x] Implement text cleaner.
 - [ ] Add support for more languages.
 - [ ] Add benchmark test.
 - [ ] Setup GitHub Action for testing.

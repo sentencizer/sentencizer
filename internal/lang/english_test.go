@@ -450,6 +450,23 @@ func Test_English(t *testing.T) {
 				"In the lists below, the winner of the award for each year is shown first, followed by the other nominees in alphabetical order.",
 			},
 		},
+		{
+			name: "Slanted quotes after multiple sentences",
+			args: args{
+				text: "Rebeca tried to forestall any comments. The way the construction was going the church would not be built before another ten years. Father Nicanor did not agree: the growing generosity of the faithful permitted him to make more optimistic calculations. To the mute Indignation of Rebeca, who could not finish her lunch, Úrsula celebrated Amaranta’s idea and contributed a considerable sum for the work to move faster. Father Nicanor felt that with another contribution like that the church would be ready within three years. From then on Rebeca did not say another word to Amaranta, convinced that her initiative had not the innocence that she attempted to give it. “That was the least serious thing I could have done,” Amaranta answered her during the violent argument they had that night. “In that way I won’t have to kill you for three years.” Rebeca accepted the challenge.",
+			},
+			want: []string{
+				"Rebeca tried to forestall any comments.",
+				"The way the construction was going the church would not be built before another ten years.",
+				"Father Nicanor did not agree: the growing generosity of the faithful permitted him to make more optimistic calculations.",
+				"To the mute Indignation of Rebeca, who could not finish her lunch, Úrsula celebrated Amaranta’s idea and contributed a considerable sum for the work to move faster.",
+				"Father Nicanor felt that with another contribution like that the church would be ready within three years.",
+				"From then on Rebeca did not say another word to Amaranta, convinced that her initiative had not the innocence that she attempted to give it.",
+				"“That was the least serious thing I could have done,” Amaranta answered her during the violent argument they had that night.",
+				"“In that way I won’t have to kill you for three years.”",
+				"Rebeca accepted the challenge.",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
