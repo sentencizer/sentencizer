@@ -1140,6 +1140,7 @@ func Test_Cleaner_PySBD(t *testing.T) {
 		{text: `It was a cold 
 night in the city.`, want: []string{`It was a cold night in the city.`}},
 		{text: `This is the U.S. Senate my friends. <em>Yes.</em> <em>It is</em>!`, want: []string{`This is the U.S. Senate my friends.`, `Yes.`, `It is!`}},
+		{text: "&lt;strong&gt;Bold.&lt;/strong&gt; Next.", want: []string{"Bold.", "Next."}},
 		{text: "\nA\n\nB\n", want: []string{"A", "B"}},
 		{text: "\na\n\nb\n", want: []string{"a", "b"}},
 		{text: "\na\n \nb\n", want: []string{"a", "b"}},

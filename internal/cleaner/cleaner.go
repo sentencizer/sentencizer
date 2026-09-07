@@ -205,7 +205,8 @@ var (
 		regexp.MustCompile(`</?\w+((\s+\w+(\s*=\s*(".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)/?>`),
 		"",
 	)
-	escapedHTMLTagRule = rule.NewRule(regexp.MustCompile(`&lt;/?[^gt;]*gt;`), "")
+	// Match tag delimiters while retaining entities in the surrounding text.
+	escapedHTMLTagRule = rule.NewRule(regexp.MustCompile(`&lt;/?[A-Za-z][\w:-]*(?:\s[^<>]*?)?/?&gt;`), "")
 	htmlRules          = rule.Rules{htmlTagRule, escapedHTMLTagRule}
 
 	// PDF (?<=[^\n]\s)\n(?=\S)
