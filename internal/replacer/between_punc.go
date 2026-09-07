@@ -10,6 +10,7 @@ var (
 	singleQuoteSpaceRegex = regexp.MustCompile(`'\s`)
 	// Rubular: http://rubular.com/r/2YFrKWQUYi
 	betweenSingleQuotesRegex = regexp.MustCompile(`(\s)'(?:[^']|'[a-zA-Z])*'`)
+	decadeApostropheRegex    = regexp.MustCompile(`^\s'[0-9]{2}\b`)
 	// Rubular: http://rubular.com/r/mXf8cW025o
 	wordWithLeadingApostropheRegex = regexp.MustCompile(`(\s)'(?:[^']|'[a-zA-Z])*'\S`)
 
@@ -95,6 +96,15 @@ func (b BetweenPunctuation) punctuationBetweenSingleQuotes(text string) string {
 	if wordWithLeadingApostropheRegex.MatchString(text) && !singleQuoteSpaceRegex.MatchString(text) {
 		return text
 	}
+	replacePunctuation := b.punctuationReplacer.ReplaceFunc(processor.PunctuationMatchTypeSingle)
 	return betweenSingleQuotesRegex.ReplaceAllStringFunc(
-		text, b.punctuationReplacer.ReplaceFunc(processor.PunctuationMatchTypeSingle))
+		text, func(match string) string {
+			// A decade apostrophe is not an opening quotation mark. Treating it as
+			// one can pair it with a distant contraction and protect a large block
+			// of sentence-ending punctuation from segmentation.
+			if decadeApostropheRegex.MatchString(match) {
+				return match
+			}
+			return replacePunctuation(match)
+		})
 }

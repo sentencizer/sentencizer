@@ -195,6 +195,20 @@ func Test_processor_sentenceBoundaryPunctuation(t *testing.T) {
 				`He never returned.`,
 			},
 		},
+		{
+			fields: fields{
+				cfg: Standard(),
+			},
+			args: args{
+				text: `First sentence. The fiscal '21 results improved, and it's encouraging. Second sentence. Third sentence.`,
+			},
+			want: []string{
+				`First sentence.`,
+				`The fiscal '21 results improved, and it's encouraging.`,
+				`Second sentence.`,
+				`Third sentence.`,
+			},
+		},
 	}
 
 	for _, tt := range tests {

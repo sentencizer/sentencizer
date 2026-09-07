@@ -18,6 +18,18 @@ func TestBetweenPunctuation_Replace(t *testing.T) {
 		},
 		{
 			args: args{
+				text: "The fiscal '21 results improved. Yes, it's encouraging. That's all.",
+			},
+			want: "The fiscal '21 results improved. Yes, it's encouraging. That's all.",
+		},
+		{
+			args: args{
+				text: "She entered '123. 456' today.",
+			},
+			want: "She entered '123∯ 456' today.",
+		},
+		{
+			args: args{
 				text: `Hello. "Hello." Hi. I'm good "13433 434o3f"`,
 			},
 			want: `Hello. "Hello∯" Hi. I'm good "13433 434o3f"`,
