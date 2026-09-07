@@ -35,8 +35,10 @@ func (c *Cleaner) Clean(text string) string {
 	if text == "" {
 		return text
 	}
-	text = c.removeAllNewlines(text)
+
+	// Preserve paragraph boundaries before repairing line wraps.
 	text = c.replaceDoubleNewlines(text)
+	text = c.removeAllNewlines(text)
 	text = c.replaceNewlines(text)
 	text = c.replaceEscapedNewlines(text)
 	text = htmlRules.Apply(text)
@@ -51,22 +53,27 @@ func (c *Cleaner) Clean(text string) string {
 
 func (c *Cleaner) removeAllNewlines(text string) string {
 	text = c.removeNewlineInMiddleOfSentence(text)
-	text = c.removeNewlineInMiddleOfWord(text)
+	text = c.joinWordLines(text)
 	return text
 }
 
-// removeNewlineInMiddleOfWord ports \n(?=[a-zA-Z]{1,2}\n) → "".
-// Lookahead cannot be expressed in RE2; matching the full \nXX\n and deleting
-// only the first \n must be applied iteratively so adjacent letter-lines join
-// (e.g. "\nW\nA\nRN\nI\nNG\n" → "WARNING\n").
-func (c *Cleaner) removeNewlineInMiddleOfWord(text string) string {
-	for {
-		loc := newLineInMiddleOfWordRegex.FindStringIndex(text)
+func (c *Cleaner) joinWordLines(text string) string {
+	var joined strings.Builder
+
+	// Match original positions so removing a newline cannot create another join.
+	for start := 0; ; {
+		loc := newLineInMiddleOfWordRegex.FindStringIndex(text[start:])
 		if loc == nil {
-			return text
+			if start == 0 {
+				return text
+			}
+			joined.WriteString(text[start:])
+			return joined.String()
 		}
-		// drop the leading '\n' of the match
-		text = text[:loc[0]] + text[loc[0]+1:]
+
+		joined.WriteString(text[start : start+loc[0]])
+		// The trailing newline can also begin the next letter-line match.
+		start += loc[0] + 1
 	}
 }
 
@@ -152,7 +159,7 @@ func (c *Cleaner) cleanConsecutiveCharacters(text string) string {
 }
 
 var (
-	// \n(?=[a-zA-Z]{1,2}\n) — full match used by removeNewlineInMiddleOfWord
+	// \n(?=[a-zA-Z]{1,2}\n) — full match used by joinWordLines
 	newLineInMiddleOfWordRegex = regexp.MustCompile(`\n[a-zA-Z]{1,2}\n`)
 
 	doubleNewLineWithSpaceRule = rule.NewRule(regexp.MustCompile(`\n \n`), "\r")

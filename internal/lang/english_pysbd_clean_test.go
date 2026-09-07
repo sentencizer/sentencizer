@@ -1140,6 +1140,11 @@ func Test_Cleaner_PySBD(t *testing.T) {
 		{text: `It was a cold 
 night in the city.`, want: []string{`It was a cold night in the city.`}},
 		{text: `This is the U.S. Senate my friends. <em>Yes.</em> <em>It is</em>!`, want: []string{`This is the U.S. Senate my friends.`, `Yes.`, `It is!`}},
+		{text: "\nA\n\nB\n", want: []string{"A", "B"}},
+		{text: "\na\n\nb\n", want: []string{"a", "b"}},
+		{text: "\na\n \nb\n", want: []string{"a", "b"}},
+		{text: "Hello.\n\nI\n\nagree.", want: []string{"Hello.", "I", "agree."}},
+		{text: "A paragraph \nwraps here.\n\nanother paragraph.", want: []string{"A paragraph wraps here.", "another paragraph."}},
 	}
 	for i, tt := range tests {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
@@ -1147,4 +1152,3 @@ night in the city.`, want: []string{`It was a cold night in the city.`}},
 		})
 	}
 }
-
