@@ -11,6 +11,18 @@ func TestClean_PySBDBasics(t *testing.T) {
 		{"This is the U.S. Senate my friends. <em>Yes.</em> <em>It is</em>!", "This is the U.S. Senate my friends. Yes. It is!"},
 		{"\nW\nA\nRN\nI\nNG\n", "WARNING\r"},
 		{"Hello world.Today is Tuesday.", "Hello world. Today is Tuesday."},
+		{
+			"Contact Jane.Doe@example.com about Jane.Doe today.",
+			"Contact Jane.Doe@example.com about Jane. Doe today.",
+		},
+		{
+			"Visit https://example.com/foo.Bar or type foo.Bar now.",
+			"Visit https://example.com/foo.Bar or type foo. Bar now.",
+		},
+		{
+			"  Type 1.About  or visit https://example.com/1.About  now.  ",
+			"  Type 1. About  or visit https://example.com/1.About  now.  ",
+		},
 		{"", ""},
 	}
 	for _, tt := range tests {

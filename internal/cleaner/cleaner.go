@@ -44,7 +44,7 @@ func (c *Cleaner) Clean(text string) string {
 	text = inlineFormattingRule.Apply(text)
 	text = c.cleanQuotations(text)
 	text = c.cleanTableOfContents(text)
-	text = c.checkForNoSpaceInBetweenSentences(text)
+	text = c.spaceSentences(text)
 	text = c.cleanConsecutiveCharacters(text)
 	return text
 }
@@ -127,26 +127,24 @@ func (c *Cleaner) cleanTableOfContents(text string) string {
 	}.Apply(text)
 }
 
-func (c *Cleaner) checkForNoSpaceInBetweenSentences(text string) string {
+func (c *Cleaner) spaceSentences(text string) string {
 	words := strings.Split(text, " ")
-	for _, word := range words {
-		text = c.searchForConnectedSentences(word, text, noSpaceBetweenSentencesRegex, noSpaceBetweenSentencesRule)
-		text = c.searchForConnectedSentences(word, text, noSpaceBetweenSentencesDigitRegex, noSpaceBetweenSentencesDigitRule)
+
+	// Transform each token independently so spacing cannot alter a URL or email elsewhere.
+	for i, word := range words {
+		words[i] = c.spaceWord(word)
 	}
-	return text
+	return strings.Join(words, " ")
 }
 
-func (c *Cleaner) searchForConnectedSentences(word, txt string, re *regexp.Regexp, r rule.Rule) string {
-	if !re.MatchString(word) {
-		return txt
-	}
+func (c *Cleaner) spaceWord(word string) string {
 	for _, k := range urlEmailKeywords {
 		if strings.Contains(word, k) {
-			return txt
+			return word
 		}
 	}
-	newWord := r.Apply(word)
-	return strings.ReplaceAll(txt, word, newWord)
+
+	return rule.Rules{noSpaceBetweenSentencesRule, noSpaceBetweenSentencesDigitRule}.Apply(word)
 }
 
 func (c *Cleaner) cleanConsecutiveCharacters(text string) string {
