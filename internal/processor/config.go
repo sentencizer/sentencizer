@@ -542,8 +542,8 @@ var (
 		"$1∯$2",
 	)
 	// Rubular: http://rubular.com/r/aXPUGm6fQh
-	// QuestionMarkInQuotationRule = Rule(r'\?(?=(\'|\"))', '&ᓷ&')
-	questionMarkInQuotationRule = rule.NewRule(regexp.MustCompile(`\?(['"])`), "&ᓷ&")
+	// pySBD: Rule(r'\?(?=(\'|\"))', '&ᓷ&') — keep the quote (lookahead).
+	questionMarkInQuotationRule = rule.NewRule(regexp.MustCompile(`\?(['"])`), "&ᓷ&$1")
 )
 
 var (
@@ -562,8 +562,10 @@ var (
 	splitSpaceQuotationAtEndOfSentenceRule = rule.NewRule(regexp.MustCompile(`([!?.-]["'“”])\s([A-Z])`), "$1\r$2")
 	// https://rubular.com/r/UkumQaILKbkeyc
 	// https://github.com/diasks2/pragmatic_segmenter/commit/d9ec1a352aff92b91e2e572c30bb9561eb42c703
+	// pySBD: (?<=[^\d\s])(\.|∯)((\[(\d{1,3},?\s?-?\s?)*\b\d{1,3}\])+|...)(\s)(?=[A-Z])
+	// Non-capturing where possible so $1..$4 stay stable for the replacement.
 	numberedReferenceRegex = regexp.MustCompile(
-		`([^\d\s])([.|∯])(\[((\d{1,3},?\s?-?\s?)*\b\d{1,3}])+|((\d{1,3}\s?)?\d{1,3}))(\s)([A-Z])`,
+		`([^\d\s])(?:\.|∯)((?:\[(?:\d{1,3},?\s?-?\s?)*\b\d{1,3}\])+|(?:(?:\d{1,3}\s?)?\d{1,3}))(\s)([A-Z])`,
 	)
 
 	SplitSpaceHebrewAtEndOfSentenceRule = rule.NewRule(regexp.MustCompile(
@@ -644,7 +646,8 @@ var (
 	sentenceBoundaryRule3 = rule.NewRule(regexp.MustCompile(`(\(([^)]){2,}\))\s([A-Z])`), "$1\r$3")
 	sentenceBoundaryRule4 = rule.NewRule(regexp.MustCompile(`('([^'])*[^,]')\s([A-Z])`), "$1\r$3")
 	sentenceBoundaryRule5 = rule.NewRule(regexp.MustCompile(`("([^"])*[^,]")\s([A-Z])`), "$1\r$3")
-	sentenceBoundaryRule6 = rule.NewRule(regexp.MustCompile(`(([^”])*[^,]”)\s([A-Z])`), "$1\r$3")
+	// Mirrors pySBD: \“(?:[^\”])*[^,]\”(?=\s[A-Z]) — require opening slanted quote.
+	sentenceBoundaryRule6 = rule.NewRule(regexp.MustCompile(`(“([^”])*[^,]”)\s([A-Z])`), "$1\r$3")
 	sentenceBoundaryRule7 = rule.NewRule(regexp.MustCompile(`(\S.*?[。．.！!?？ȸȹ☉☈☇☄])\s*(\S*?)`), "$1\r$2")
 	sentenceBoundaryRule8 = rule.NewRule(regexp.MustCompile(`([。．.！!? ]{2,})`), "$1\r")
 	sentenceBoundaryRule9 = rule.NewRule(regexp.MustCompile(`([。．.！!?？])`), "$1\r")

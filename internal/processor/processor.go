@@ -36,6 +36,9 @@ func (p *Processor) Process(text string) []string {
 	text = p.listItemReplacer.AddLineBreak(text)
 	text = p.abbrReplacer.Replace(text)
 	text = p.replaceNumbers(text)
+	if p.cfg.ContinuousPunctuationRegex != nil {
+		text = p.replaceContinuousPunctuation(text)
+	}
 	text = p.replacePeriodsBeforeNumericReferences(text)
 	text = p.cfg.Abbreviation.WithMultiplePeriodsAndEmailRule.Apply(text)
 	text = p.cfg.GeoLocationRule.Apply(text)
@@ -66,7 +69,9 @@ func (p *Processor) splitIntoSegments(text string) []string {
 	for i, s := range postProcessedSentences {
 		postProcessedSentences[i] = p.cfg.SubSingleQuoteRule.Apply(s)
 	}
-	return postProcessedSentences
+	// Mirror pySBD rm_none_flatten / falsy post_process filtering so clean-mode
+	// list breaks that produce "\r\r" do not yield empty sentences.
+	return p.filterEmpty(postProcessedSentences)
 }
 
 var (
@@ -115,9 +120,10 @@ func (p *Processor) applyEllipsisRule(sents []string) {
 func (p *Processor) filterEmpty(sents []string) []string {
 	var res []string
 	for _, s := range sents {
-		if s != "" && s != " " {
-			res = append(res, s)
+		if strings.TrimSpace(s) == "" {
+			continue
 		}
+		res = append(res, s)
 	}
 	return res
 }
@@ -162,7 +168,11 @@ func (p *Processor) sentenceBoundaryPunctuation(text string) []string {
 	// retain exclamation mark if it is an ending character of a given text
 	text = exclamationRegex.ReplaceAllString(text, "!")
 	priorIndex := 0
-	for _, rule := range p.cfg.SentenceBoundaryRules.All {
+	// Rules 0-5 mirror pySBD quote/paren alternatives; rules 6+ are period-based.
+	// After quote rules, reset priorIndex so a late quote match near EOF cannot
+	// skip period splits in the unprocessed prefix (Go RE2 has no lookaheads).
+	const lastQuoteStyleRule = 5
+	for i, rule := range p.cfg.SentenceBoundaryRules.All {
 		maxIdx := 0
 		for _, match := range rule.Pattern().FindAllStringIndex(text, -1) {
 			if match[1] > maxIdx {
@@ -170,6 +180,9 @@ func (p *Processor) sentenceBoundaryPunctuation(text string) []string {
 			}
 		}
 		if maxIdx == 0 {
+			if i == lastQuoteStyleRule {
+				priorIndex = 0
+			}
 			continue
 		}
 		if priorIndex > len(text) {
@@ -177,6 +190,9 @@ func (p *Processor) sentenceBoundaryPunctuation(text string) []string {
 		}
 		text = text[:priorIndex] + rule.Apply(text[priorIndex:])
 		priorIndex = maxIdx - 1
+		if i == lastQuoteStyleRule {
+			priorIndex = 0
+		}
 	}
 	return p.filterEmpty(strings.Split(text, "\r"))
 }
@@ -205,14 +221,18 @@ func (p *Processor) checkForParens(text string) string {
 }
 
 func (p *Processor) replacePeriodsBeforeNumericReferences(text string) string {
-	return p.cfg.NumberedReferenceRegex.ReplaceAllString(text, "$1∯$3\r$9")
+	// Drop the captured whitespace before the next capital (matches prior sentencizer /
+	// pragmatic_segmenter expectation: "\rThe" not "\r The").
+	return p.cfg.NumberedReferenceRegex.ReplaceAllString(text, "$1∯$2\r$4")
 }
 
 func (p *Processor) replaceContinuousPunctuation(text string) string {
 	replaceFunc := func(match string) string {
-		replaced := regexp.MustCompile(`!`).ReplaceAllString(match, "&ᓴ&")
-		replaced = regexp.MustCompile(`\?`).ReplaceAllString(replaced, "&ᓷ&")
-		return replaced
+		// Keep the final mark available to sentence and quotation rules.
+		last := strings.LastIndexAny(match, "!?")
+		replaced := strings.ReplaceAll(match[:last], "!", "&ᓴ&")
+		replaced = strings.ReplaceAll(replaced, "?", "&ᓷ&")
+		return replaced + match[last:]
 	}
 	return p.cfg.ContinuousPunctuationRegex.ReplaceAllStringFunc(text, replaceFunc)
 }

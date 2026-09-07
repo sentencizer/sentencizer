@@ -21,7 +21,7 @@ func Test_processor_replaceContinuousPunctuation(t *testing.T) {
 			args: args{
 				text: "Hello!!! How are you!!?",
 			},
-			want: "Hello&ᓴ&&ᓴ&&ᓴ& How are you&ᓴ&&ᓴ&&ᓷ&",
+			want: "Hello&ᓴ&&ᓴ&! How are you&ᓴ&&ᓴ&?",
 		},
 	}
 	for _, tt := range tests {

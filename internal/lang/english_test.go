@@ -6,6 +6,55 @@ import (
 	"github.com/sentencizer/sentencizer"
 )
 
+func TestEnglishPunctuationRuns(t *testing.T) {
+	plain := sentencizer.NewSegmenter("en")
+	clean := sentencizer.NewSegmenter("en", sentencizer.Clean())
+	tests := []struct {
+		text string
+		want []string
+	}{
+		{"Hello!!! How are you?", []string{"Hello!!!", "How are you?"}},
+		{"Why??? Because.", []string{"Why???", "Because."}},
+		{"Stop!!! Run!!! Hide.", []string{"Stop!!!", "Run!!!", "Hide."}},
+		{"Hi!!? Goodbye.", []string{"Hi!!?", "Goodbye."}},
+		{"Really?!? Yes!?! Finally.", []string{"Really?!?", "Yes!?!", "Finally."}},
+		{"Hello!!!\tHow are you?", []string{"Hello!!!", "How are you?"}},
+		{"Hi!!!", []string{"Hi!!!"}},
+		{"Hi???", []string{"Hi???"}},
+		{`She shouted "Stop!!! Run!!!" and left.`, []string{`She shouted "Stop!!! Run!!!" and left.`}},
+		{"Oh!!! that's surprising.", []string{"Oh!!! that's surprising."}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.text, func(t *testing.T) {
+			t.Run("default", func(t *testing.T) {
+				assertSegments(t, plain.Segment(tt.text), tt.want)
+			})
+			t.Run("clean", func(t *testing.T) {
+				assertSegments(t, clean.Segment(tt.text), tt.want)
+			})
+		})
+	}
+}
+
+func TestEnglishPunctuationSpans(t *testing.T) {
+	got := sentencizer.NewSegmenter("en").TextSpans("Café!!! Next.")
+	want := []struct {
+		sentence   string
+		start, end int
+	}{
+		{"Café!!!", 0, len("Café!!! ")},
+		{"Next.", len("Café!!! "), len("Café!!! Next.")},
+	}
+	if len(got) != len(want) {
+		t.Fatalf("TextSpans() = %#v, want %d spans", got, len(want))
+	}
+	for i, span := range got {
+		if span.Sentence != want[i].sentence || span.Start != want[i].start || span.End != want[i].end {
+			t.Errorf("TextSpans()[%d] = %#v, want %#v", i, span, want[i])
+		}
+	}
+}
+
 func Test_English(t *testing.T) {
 	type args struct {
 		text string
@@ -448,6 +497,23 @@ func Test_English(t *testing.T) {
 				"It is awarded to the best interior design in a film.[2]",
 				"The films below are listed with their production year (for example, the 2000 Academy Award for Best Art Direction is given to a film from 1999).",
 				"In the lists below, the winner of the award for each year is shown first, followed by the other nominees in alphabetical order.",
+			},
+		},
+		{
+			name: "Slanted quotes after multiple sentences",
+			args: args{
+				text: "Rebeca tried to forestall any comments. The way the construction was going the church would not be built before another ten years. Father Nicanor did not agree: the growing generosity of the faithful permitted him to make more optimistic calculations. To the mute Indignation of Rebeca, who could not finish her lunch, Úrsula celebrated Amaranta’s idea and contributed a considerable sum for the work to move faster. Father Nicanor felt that with another contribution like that the church would be ready within three years. From then on Rebeca did not say another word to Amaranta, convinced that her initiative had not the innocence that she attempted to give it. “That was the least serious thing I could have done,” Amaranta answered her during the violent argument they had that night. “In that way I won’t have to kill you for three years.” Rebeca accepted the challenge.",
+			},
+			want: []string{
+				"Rebeca tried to forestall any comments.",
+				"The way the construction was going the church would not be built before another ten years.",
+				"Father Nicanor did not agree: the growing generosity of the faithful permitted him to make more optimistic calculations.",
+				"To the mute Indignation of Rebeca, who could not finish her lunch, Úrsula celebrated Amaranta’s idea and contributed a considerable sum for the work to move faster.",
+				"Father Nicanor felt that with another contribution like that the church would be ready within three years.",
+				"From then on Rebeca did not say another word to Amaranta, convinced that her initiative had not the innocence that she attempted to give it.",
+				"“That was the least serious thing I could have done,” Amaranta answered her during the violent argument they had that night.",
+				"“In that way I won’t have to kill you for three years.”",
+				"Rebeca accepted the challenge.",
 			},
 		},
 	}
