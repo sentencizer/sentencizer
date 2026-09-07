@@ -65,7 +65,7 @@ func main() {
 - [x] Implement text cleaner.
 - [ ] Add support for more languages.
 - [ ] Add benchmark test.
-- [ ] Setup GitHub Action for testing.
+- [x] Setup GitHub Action for testing.
 
 ## Language Support Roadmap
 
