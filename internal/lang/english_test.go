@@ -6,6 +6,55 @@ import (
 	"github.com/sentencizer/sentencizer"
 )
 
+func TestEnglishPunctuationRuns(t *testing.T) {
+	plain := sentencizer.NewSegmenter("en")
+	clean := sentencizer.NewSegmenter("en", sentencizer.Clean())
+	tests := []struct {
+		text string
+		want []string
+	}{
+		{"Hello!!! How are you?", []string{"Hello!!!", "How are you?"}},
+		{"Why??? Because.", []string{"Why???", "Because."}},
+		{"Stop!!! Run!!! Hide.", []string{"Stop!!!", "Run!!!", "Hide."}},
+		{"Hi!!? Goodbye.", []string{"Hi!!?", "Goodbye."}},
+		{"Really?!? Yes!?! Finally.", []string{"Really?!?", "Yes!?!", "Finally."}},
+		{"Hello!!!\tHow are you?", []string{"Hello!!!", "How are you?"}},
+		{"Hi!!!", []string{"Hi!!!"}},
+		{"Hi???", []string{"Hi???"}},
+		{`She shouted "Stop!!! Run!!!" and left.`, []string{`She shouted "Stop!!! Run!!!" and left.`}},
+		{"Oh!!! that's surprising.", []string{"Oh!!! that's surprising."}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.text, func(t *testing.T) {
+			t.Run("default", func(t *testing.T) {
+				assertSegments(t, plain.Segment(tt.text), tt.want)
+			})
+			t.Run("clean", func(t *testing.T) {
+				assertSegments(t, clean.Segment(tt.text), tt.want)
+			})
+		})
+	}
+}
+
+func TestEnglishPunctuationSpans(t *testing.T) {
+	got := sentencizer.NewSegmenter("en").TextSpans("Café!!! Next.")
+	want := []struct {
+		sentence   string
+		start, end int
+	}{
+		{"Café!!!", 0, len("Café!!! ")},
+		{"Next.", len("Café!!! "), len("Café!!! Next.")},
+	}
+	if len(got) != len(want) {
+		t.Fatalf("TextSpans() = %#v, want %d spans", got, len(want))
+	}
+	for i, span := range got {
+		if span.Sentence != want[i].sentence || span.Start != want[i].start || span.End != want[i].end {
+			t.Errorf("TextSpans()[%d] = %#v, want %#v", i, span, want[i])
+		}
+	}
+}
+
 func Test_English(t *testing.T) {
 	type args struct {
 		text string

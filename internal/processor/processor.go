@@ -228,9 +228,11 @@ func (p *Processor) replacePeriodsBeforeNumericReferences(text string) string {
 
 func (p *Processor) replaceContinuousPunctuation(text string) string {
 	replaceFunc := func(match string) string {
-		replaced := regexp.MustCompile(`!`).ReplaceAllString(match, "&ᓴ&")
-		replaced = regexp.MustCompile(`\?`).ReplaceAllString(replaced, "&ᓷ&")
-		return replaced
+		// Keep the final mark available to sentence and quotation rules.
+		last := strings.LastIndexAny(match, "!?")
+		replaced := strings.ReplaceAll(match[:last], "!", "&ᓴ&")
+		replaced = strings.ReplaceAll(replaced, "?", "&ᓷ&")
+		return replaced + match[last:]
 	}
 	return p.cfg.ContinuousPunctuationRegex.ReplaceAllStringFunc(text, replaceFunc)
 }
