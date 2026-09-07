@@ -159,8 +159,8 @@ func (c *Cleaner) cleanConsecutiveCharacters(text string) string {
 }
 
 var (
-	// \n(?=[a-zA-Z]{1,2}\n) — full match used by joinWordLines
-	newLineInMiddleOfWordRegex = regexp.MustCompile(`\n[a-zA-Z]{1,2}\n`)
+	// A protected paragraph ending also terminates the final letter line.
+	newLineInMiddleOfWordRegex = regexp.MustCompile(`\n[a-zA-Z]{1,2}[\n\r]`)
 
 	doubleNewLineWithSpaceRule = rule.NewRule(regexp.MustCompile(`\n \n`), "\r")
 	doubleNewLineRule          = rule.NewRule(regexp.MustCompile(`\n\n`), "\r")
